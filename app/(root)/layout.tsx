@@ -1,4 +1,5 @@
-import Mobilenav from '@/components/shared/Mobilenav'
+
+import Mobilenav from '@/components/shared/MobileNav'
 import Sidebar from '@/components/shared/Sidebar'
 import React from 'react'
 
