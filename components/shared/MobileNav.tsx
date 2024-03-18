@@ -1,3 +1,4 @@
+"use client"
 import {
     Sheet,
     SheetContent,
@@ -6,12 +7,15 @@ import {
     SheetTitle,
     SheetTrigger,
   } from "@/components/ui/sheet"
+import { navLinks } from "@/constants"
 import { SignedIn, UserButton } from "@clerk/nextjs"
 import Image from "next/image"
 import Link from "next/link"
+import { usePathname } from "next/navigation"
   
 
 const Mobilenav = () => {
+  const pathname = usePathname()
   return (
     <header className="header">
         <Link 
@@ -39,7 +43,41 @@ const Mobilenav = () => {
                     />
                   </SheetTrigger>
                   <SheetContent className="sheet-content sm:w-64">
-                      
+                      <>
+                        <Image 
+                          src="/assets/images/logo-text.svg"
+                          alt="logo"
+                          width={152}
+                          height={23}
+                        />
+                        <ul className='header-nav_elements'>
+                          {
+                            navLinks.map((link) => {
+                              const isActive = link.route === pathname;
+                              return (
+                                <li 
+                                  key={link.route}
+                                  className={`sidebar-nav_element group
+                                  ${isActive && "gradient-text"} text-dark-700
+                                  `}
+                                  >
+                                    <Link 
+                                      className="sidebar-link cursor-pointer" 
+                                      href={link.route}>
+                                        <Image 
+                                          src={link.icon}
+                                          alt='logo'
+                                          width={24}
+                                          height={24}
+                                        />
+                                        {link.label}
+                                    </Link>
+                                </li>
+                              )
+                            })
+                          }
+                        </ul>
+                      </>
                   </SheetContent>
                 </Sheet>
             </SignedIn>
