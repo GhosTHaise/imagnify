@@ -16,7 +16,7 @@ if(!cached){
     }
 }
 
-export const connectDatabase = async() => {
+export const connectToDatabase = async() => {
     if(cached.conn) return cached.conn;
     
     if(!MONGOBD_URL) throw new Error("Midding MONGODB_URL");
