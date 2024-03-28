@@ -3,7 +3,7 @@ import React from 'react'
 
 const AddTransformationTypePage = () => {
   return (
-    <Header />
+    <Header title="Transformation Title" subTitle="Transformation Subtitle" />
   )
 }
 
