@@ -1,14 +1,10 @@
-import Header from '@/components/shared/header'
-import React from 'react'
+import Header from '@/components/shared/header';
+import { transformationTypes } from '@/constants';
 
-type SearchParamProps = {
-  params : {
-    type : string
-  }
-}
 const AddTransformationTypePage = ({ params : { type }} : SearchParamProps) => {
+  const transformation = transformationTypes[type];
   return (
-    <Header title="Transformation Title" subTitle="Transformation Subtitle" />
+    <Header title={transformation.title} subTitle={transformation.subTitle} />
   )
 }
 
