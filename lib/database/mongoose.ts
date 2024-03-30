@@ -18,11 +18,11 @@ if(!cached){
 
 export const connectToDatabase = async() => {
     if(cached.conn) return cached.conn;
-    
+
     if(!MONGOBD_URL) throw new Error("Midding MONGODB_URL");
 
     cached.promise = cached.promise
-    || 
+    ||
     mongoose.connect(MONGOBD_URL,{dbName : "imaginify",bufferCommands : false});
 
     cached.conn = await cached.promise;

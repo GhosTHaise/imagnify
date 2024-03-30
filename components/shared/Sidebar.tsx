@@ -12,11 +12,11 @@ const Sidebar = () => {
   return (
     <aside className='sidebar'>
         <div className="flex size-full flex-col gap-4">
-            <Link 
+            <Link
               href="/"
               className='sidebar-logo'
               >
-                <Image 
+                <Image
                   src="/assets/images/logo-text.svg"
                   alt='logo'
                   width={180}
@@ -30,16 +30,16 @@ const Sidebar = () => {
                             navLinks.slice(0,6).map((link) => {
                               const isActive = link.route === pathname;
                               return (
-                                <li 
+                                <li
                                   key={link.route}
                                   className={`sidebar-nav_element group
                                   ${isActive ? "bg-purple-gradient text-white" : "text-gray-700"}
                                   `}
                                   >
-                                    <Link 
-                                      className="sidebar-link" 
+                                    <Link
+                                      className="sidebar-link"
                                       href={link.route}>
-                                        <Image 
+                                        <Image
                                           src={link.icon}
                                           alt='logo'
                                           width={24}
@@ -58,16 +58,16 @@ const Sidebar = () => {
                             navLinks.slice(6).map((link) => {
                               const isActive = link.route === pathname;
                               return (
-                                <li 
+                                <li
                                   key={link.route}
                                   className={`sidebar-nav_element group
                                   ${isActive ? "bg-purple-gradient text-white" : "text-gray-700"}
                                   `}
                                   >
-                                    <Link 
-                                      className="sidebar-link" 
+                                    <Link
+                                      className="sidebar-link"
                                       href={link.route}>
-                                        <Image 
+                                        <Image
                                           src={link.icon}
                                           alt='logo'
                                           width={24}
@@ -81,15 +81,15 @@ const Sidebar = () => {
                             })
                           }
                           <li className='flex-center cursor-pointer gap-2 p-4'>
-                              <UserButton 
-                              afterSignOutUrl='/' 
+                              <UserButton
+                              afterSignOutUrl='/'
                               showName />
                             </li>
                         </ul>
                     </SignedIn>
 
                     <SignedOut>
-                        <Button 
+                        <Button
                           asChild
                           className='button bg-purple-gradient bg-cover'
                           >
@@ -99,7 +99,7 @@ const Sidebar = () => {
                         </Button>
                     </SignedOut>
                 </nav>
-            
+
         </div>
     </aside>
   )

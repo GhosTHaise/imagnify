@@ -9,14 +9,14 @@ declare type CreateUserParams = {
     lastName: string;
     photo: string;
   };
-  
+
   declare type UpdateUserParams = {
     firstName: string;
     lastName: string;
     username: string;
     photo: string;
   };
-  
+
   // ====== IMAGE PARAMS
   declare type AddImageParams = {
     image: {
@@ -35,7 +35,7 @@ declare type CreateUserParams = {
     userId: string;
     path: string;
   };
-  
+
   declare type UpdateImageParams = {
     image: {
       _id: string;
@@ -54,7 +54,7 @@ declare type CreateUserParams = {
     userId: string;
     path: string;
   };
-  
+
   declare type Transformations = {
     restore?: boolean;
     fillBackground?: boolean;
@@ -70,7 +70,7 @@ declare type CreateUserParams = {
     };
     removeBackground?: boolean;
   };
-  
+
   // ====== TRANSACTION PARAMS
   declare type CheckoutTransactionParams = {
     plan: string;
@@ -78,7 +78,7 @@ declare type CreateUserParams = {
     amount: number;
     buyerId: string;
   };
-  
+
   declare type CreateTransactionParams = {
     stripeId: string;
     amount: number;
@@ -87,37 +87,37 @@ declare type CreateUserParams = {
     buyerId: string;
     createdAt: Date;
   };
-  
+
   declare type TransformationTypeKey =
     | "restore"
     | "fill"
     | "remove"
     | "recolor"
     | "removeBackground";
-  
+
   // ====== URL QUERY PARAMS
   declare type FormUrlQueryParams = {
     searchParams: string;
     key: string;
     value: string | number | null;
   };
-  
+
   declare type UrlQueryParams = {
     params: string;
     key: string;
     value: string | null;
   };
-  
+
   declare type RemoveUrlQueryParams = {
     searchParams: string;
     keysToRemove: string[];
   };
-  
+
   declare type SearchParamProps = {
     params: { id: string; type: TransformationTypeKey };
     searchParams: { [key: string]: string | string[] | undefined };
   };
-  
+
   declare type TransformationFormProps = {
     action: "Add" | "Update";
     userId: string;
@@ -126,7 +126,7 @@ declare type CreateUserParams = {
     data?: IImage | null;
     config?: Transformations | null;
   };
-  
+
   declare type TransformedImageProps = {
     image: any;
     type: string;

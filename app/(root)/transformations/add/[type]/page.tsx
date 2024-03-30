@@ -7,7 +7,7 @@ const AddTransformationTypePage = ({ params : { type }} : SearchParamProps) => {
   return (
     <>
       <Header title={transformation.title} subTitle={transformation.subTitle} />
-      <TransformationForm /> 
+      <TransformationForm />
     </>
     )
 }
