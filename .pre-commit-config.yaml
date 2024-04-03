@@ -1,11 +1,20 @@
 repos:
--   repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v2.3.0
+  - repo: local
     hooks:
-    -   id: check-yaml
-    -   id: trailing-whitespace
-    -   id: pretty-format-json
--   repo: https://github.com/psf/black
-    rev: 22.10.0
-    hooks:
-    -   id: black
+      - id: prettier-format
+        name: Prettier Format
+        language: system
+        entry: npx prettier --write .
+        pass_filenames: false
+        types:
+          - ts
+        files: \.(ts|js)x?$
+
+      - id: eslint-lint
+        name: ESLint Lint
+        language: system
+        entry: npx eslint --fix .
+        pass_filenames: false
+        types:
+          - ts
+        files: \.(ts|js)x?$
