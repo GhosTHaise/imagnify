@@ -5,9 +5,9 @@ import { cn } from "@/lib/utils";
 import { ClerkProvider } from "@clerk/nextjs";
 const IBMPlex = IBM_Plex_Sans({
   subsets: ["latin"],
-  weight : ["400",'500','600','700'],
-  variable : '--font-ib,-plex'
- });
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-ib,-plex",
+});
 
 export const metadata: Metadata = {
   title: "Imagnify",
@@ -22,13 +22,13 @@ export default function RootLayout({
   return (
     <ClerkProvider
       appearance={{
-        variables : {
-          colorPrimary : "#624cf5"
-        }
+        variables: {
+          colorPrimary: "#624cf5",
+        },
       }}
     >
       <html lang="en">
-        <body className={cn("font-IBMPlex antialiased",IBMPlex.variable)}>
+        <body className={cn("font-IBMPlex antialiased", IBMPlex.variable)}>
           {children}
         </body>
       </html>
