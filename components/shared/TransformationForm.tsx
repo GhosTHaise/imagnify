@@ -23,9 +23,10 @@ import {
 } from "@/components/ui/select"
 
 import { Input } from "@/components/ui/input"
-import { defaultValues, transformationTypes } from "@/constants"
+import { aspectRatioOptions, defaultValues, transformationTypes } from "@/constants"
 import { CustomField } from "./CustomField"
 import { useState } from "react"
+import { AspectRatioKey } from "@/lib/utils"
 
 export const formSchema = z.object({
   title : z.string(),
@@ -69,6 +70,10 @@ const TransformationForm = ({
 
   }
 
+  const onInputChangeHandler = (fieldName : string, value : string , type : string,onChangeField : (value : string) => void) => {
+
+  }
+
   return (
     <Form {...form}>
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -89,18 +94,25 @@ const TransformationForm = ({
             render={({field}) => (
               <Select onValueChange={(value) => onSelectFieldHandler(value,field.onChange)}>
                 <SelectTrigger className="select-field">
-                  <SelectValue placeholder="Theme" />
+                  <SelectValue placeholder="Select size" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="light">Light</SelectItem>
-                  <SelectItem value="dark">Dark</SelectItem>
-                  <SelectItem value="system">System</SelectItem>
+                  {
+                    Object.keys(aspectRatioOptions).map((key)=> (
+                      <SelectItem
+                        key={key}
+                        value={key}>
+                          {aspectRatioOptions[key as AspectRatioKey].label}
+                      </SelectItem>
+                    ))
+                  }
                 </SelectContent>
               </Select>
             )}
           />
         )
       }
+
     </form>
   </Form>
   )
