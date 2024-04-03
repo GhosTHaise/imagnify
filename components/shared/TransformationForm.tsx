@@ -112,7 +112,32 @@ const TransformationForm = ({
           />
         )
       }
-
+    {
+        (type === "remove" || type == "recolor") && (
+          <div className="prompt-field">
+              <CustomField
+                control={form.control}
+                name="prompt"
+                formLabel={
+                  type === "remove" ? "Object to remove" : "Object to recolor"
+                }
+                className="w-full"
+                render={({field}) => (
+                  <Input
+                    value={field.value}
+                    className="input-field "
+                    onChange={(e) => onInputChangeHandler(
+                      'prompt',
+                      e.target.value,
+                      type,
+                      field.onChange
+                    )}
+                  />
+                )}
+              />
+          </div>
+        )
+      }
     </form>
   </Form>
   )
