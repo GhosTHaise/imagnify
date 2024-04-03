@@ -112,7 +112,7 @@ const TransformationForm = ({
           />
         )
       }
-    {
+      {
         (type === "remove" || type == "recolor") && (
           <div className="prompt-field">
               <CustomField
