@@ -46,12 +46,17 @@ const TransformationForm = ({
   userId,
   type,
   creditBalance,
+  config = null
 }: TransformationFormProps) => {
   const transformtaionType = transformationTypes[type];
 
   const [image, setImage] = useState(data);
   const [newTransformation, setnewTransformation] =
     useState<Transformations | null>(null);
+
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isTransforming, setIsTransfroming] = useState(false);
+    const [transformationConfig, setTransformationConfig] = useState(config);
   // 1. Define your form.
   const initialValues =
     data && action === "Update"
@@ -146,8 +151,36 @@ const TransformationForm = ({
                 />
               )}
             />
+            { type === "recolor" && (
+              <CustomField 
+                control={form.control}
+                name="color"
+                formLabel="Replacement color"
+                className="w-full"
+                render={({field}) => (
+                  <Input 
+                    value={field.value}
+                    className="input-field "
+                    onChange={(e) =>
+                    onInputChangeHandler(
+                      "color",
+                      e.target.value,
+                      type,
+                      field.onChange,
+                    )
+                  } />
+                )}
+              />
+            )}
           </div>
         )}
+        <Button
+          type="submit"
+          className="submit-button capitalize"
+          disabled={isSubmitting}
+          >
+          Submit
+        </Button>
       </form>
     </Form>
   );
