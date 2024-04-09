@@ -29,8 +29,8 @@ import {
   transformationTypes,
 } from "@/constants";
 import { CustomField } from "./CustomField";
-import { useState } from "react";
-import { AspectRatioKey } from "@/lib/utils";
+import { useState, useTransition } from "react";
+import { AspectRatioKey, debounce } from "@/lib/utils";
 
 export const formSchema = z.object({
   title: z.string(),
@@ -51,12 +51,14 @@ const TransformationForm = ({
   const transformtaionType = transformationTypes[type];
 
   const [image, setImage] = useState(data);
-  const [newTransformation, setnewTransformation] =
+  const [newTransformation, setNewTransformation] =
     useState<Transformations | null>(null);
 
     const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isTransforming, setIsTransfroming] = useState(false);
+    const [isTransforming, setIsTransforming] = useState(false);
     const [transformationConfig, setTransformationConfig] = useState(config);
+
+    const [isPending,startTransition] = useTransition();
   // 1. Define your form.
   const initialValues =
     data && action === "Update"
@@ -74,7 +76,7 @@ const TransformationForm = ({
     defaultValues: initialValues,
   });
 
-  // 2. Define a submit handler.
+  // 2. Define a submit handler. 
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
@@ -82,17 +84,42 @@ const TransformationForm = ({
   const onSelectFieldHandler = (
     value: string,
     onChangeField: (value: string) => void,
-  ) => {};
+  ) => {
+    const imageSize = aspectRatioOptions[value as AspectRatioKey]
+
+    setImage((prevState : any) => ({
+      ...prevState,
+      aspectRatio : imageSize.aspectRatio,
+      width : imageSize.width,
+      height : imageSize.height
+    }));
+
+    setNewTransformation(transformtaionType.config);
+
+    return onChangeField(value)
+  };
 
   const onInputChangeHandler = (
     fieldName: string,
     value: string,
     type: string,
     onChangeField: (value: string) => void,
-  ) => {};
+  ) => {
+     debounce(() => {
+       setNewTransformation((prevState : any) => ({
+          ...prevState,
+          [type] : {
+            ...prevState?.[type],
+            [fieldName === "prompt" ? "prompt" : "to"] : value
+          }
+       }))
 
-  const onTransformHandler = () => {
+       return onChangeField(value);
+     } , 1000)
+  };
 
+  const onTransformHandler = async() => {
+    setIsTransfroming
   }
 
   return (
