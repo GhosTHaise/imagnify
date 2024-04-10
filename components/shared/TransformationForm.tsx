@@ -229,7 +229,7 @@ const TransformationForm = ({
                 onValueChange={field.onChange}
                 setImage={setImage}
                 publicId={field.value}
-                Image={image}
+                image={image}
                 type={type}
               />
             )}

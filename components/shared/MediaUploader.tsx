@@ -1,8 +1,10 @@
-import { CldUploadWidget } from "next-cloudinary";
+import { CldImage, CldUploadWidget } from "next-cloudinary";
 import { useToast } from "../ui/use-toast";
 import { title } from "process";
 import React from "react";
 import Image from "next/image";
+import { dataUrl, getImageSize } from "@/lib/utils"
+import { PlaceholderValue } from "next/dist/shared/lib/get-img-props";
 
 type MediaUploaderProps = {
   onValueChange: (value: string) => void,
@@ -56,7 +58,17 @@ const MediaUploader = ({
             {
               publicId ? (
                 <>
-                  HERE IS THE IMAGE
+                  <div className="cursor-pointer overflow-hidden rounded-[10px]"> 
+                    <CldImage
+                      width={getImageSize(type,image,"width")}
+                      height={getImageSize(type,image,"height")}
+                      src={publicId}
+                      alt="image"
+                      sizes={"(max-width : 767px 100vw, 50vw"}
+                      placeholder={dataUrl as PlaceholderValue}
+                      className="media-uplader_cldImage"
+                    />
+                  </div>
                 </>
               ) : (
                 <div className="media-uploader_cta" onClick={() => open()}>
