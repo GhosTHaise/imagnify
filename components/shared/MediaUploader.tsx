@@ -1,6 +1,6 @@
+"use client"
 import { CldImage, CldUploadWidget } from "next-cloudinary";
 import { useToast } from "../ui/use-toast";
-import { title } from "process";
 import React from "react";
 import Image from "next/image";
 import { dataUrl, getImageSize } from "@/lib/utils"
@@ -24,6 +24,16 @@ const MediaUploader = ({
   const { toast } = useToast();
 
   const onUploadSuccessHandler = (result: any) => {
+    setImage((prevState : any) => ({
+      ...prevState,
+      publicId : result?.info?.public_id,
+      width : result?.info?.width,
+      height : result?.info?.height,
+      secureUrl : result?.info?.secure_url,
+    }));
+    
+    onValueChange(result?.info.public_id);
+
     toast({
       title: "Impage uploaded successfully",
       description: "1 credit was deducted from your account",
