@@ -34,6 +34,7 @@ import { useState, useTransition } from "react";
 import { AspectRatioKey, debounce, deepMergeObjects } from "@/lib/utils";
 import { updateCredits } from "@/lib/actions/user.actions";
 import MediaUploader from "./MediaUploader";
+import TransformedImage from "./TransformedImage";
 
 export const formSchema = z.object({
   title: z.string(),
@@ -234,6 +235,8 @@ const TransformationForm = ({
               />
             )}
           />
+
+          <TransformedImage />
         </div>
         
         <div className="flex flex-col gap-4">
