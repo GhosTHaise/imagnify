@@ -7,6 +7,7 @@ const TransformedImage = ({
   title,
   isTransforming,
   setIsTransforming,
+  transformationConfig,
   hasDownload = false
 } : TransformedImageProps) => {
 
@@ -38,6 +39,17 @@ const TransformedImage = ({
             )
           }
       </div>
+      {
+        image?.publicId && transformationConfig ? (
+          <div className='relative'>
+              
+          </div>
+        ) : (
+          <div className='transformed-placeholder'>
+            Transformed Image
+          </div>
+        )
+      }
     </div>
   )
 }
