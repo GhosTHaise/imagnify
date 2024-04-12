@@ -58,21 +58,21 @@ const TransformationForm = ({
   const [newTransformation, setNewTransformation] =
     useState<Transformations | null>(null);
 
-    const [isSubmitting, setIsSubmitting] = useState(false);
-    const [isTransforming, setIsTransforming] = useState(false);
-    const [transformationConfig, setTransformationConfig] = useState(config);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isTransforming, setIsTransforming] = useState(false);
+  const [transformationConfig, setTransformationConfig] = useState(config);
 
-    const [isPending,startTransition] = useTransition();
+  const [isPending, startTransition] = useTransition();
   // 1. Define your form.
   const initialValues =
     data && action === "Update"
       ? {
-          title: data?.title,
-          aspectRatio: data?.aspectRatio,
-          color: data?.color,
-          prompt: data?.prompt,
-          publicId: data?.publicId,
-        }
+        title: data?.title,
+        aspectRatio: data?.aspectRatio,
+        color: data?.color,
+        prompt: data?.prompt,
+        publicId: data?.publicId,
+      }
       : defaultValues;
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -91,11 +91,11 @@ const TransformationForm = ({
   ) => {
     const imageSize = aspectRatioOptions[value as AspectRatioKey]
 
-    setImage((prevState : any) => ({
+    setImage((prevState: any) => ({
       ...prevState,
-      aspectRatio : imageSize.aspectRatio,
-      width : imageSize.width,
-      height : imageSize.height
+      aspectRatio: imageSize.aspectRatio,
+      width: imageSize.width,
+      height: imageSize.height
     }));
 
     setNewTransformation(transformtaionType.config);
@@ -109,25 +109,25 @@ const TransformationForm = ({
     type: string,
     onChangeField: (value: string) => void,
   ) => {
-     debounce(() => {
-       setNewTransformation((prevState : any) => ({
-          ...prevState,
-          [type] : {
-            ...prevState?.[type],
-            [fieldName === "prompt" ? "prompt" : "to"] : value
-          }
-       }))
+    debounce(() => {
+      setNewTransformation((prevState: any) => ({
+        ...prevState,
+        [type]: {
+          ...prevState?.[type],
+          [fieldName === "prompt" ? "prompt" : "to"]: value
+        }
+      }))
 
-       return onChangeField(value);
-     } , 1000)
+      return onChangeField(value);
+    }, 1000)
   };
 
   //TODO : return to update credits
-  const onTransformHandler = async() => {
+  const onTransformHandler = async () => {
     setIsTransforming(true);
 
     setTransformationConfig(
-      deepMergeObjects(newTransformation,transformationConfig)
+      deepMergeObjects(newTransformation, transformationConfig)
     )
 
     setNewTransformation(null)
@@ -196,24 +196,24 @@ const TransformationForm = ({
                 />
               )}
             />
-            { type === "recolor" && (
-              <CustomField 
+            {type === "recolor" && (
+              <CustomField
                 control={form.control}
                 name="color"
                 formLabel="Replacement color"
                 className="w-full"
-                render={({field}) => (
-                  <Input 
+                render={({ field }) => (
+                  <Input
                     value={field.value}
                     className="input-field "
                     onChange={(e) =>
-                    onInputChangeHandler(
-                      "color",
-                      e.target.value,
-                      type,
-                      field.onChange,
-                    )
-                  } />
+                      onInputChangeHandler(
+                        "color",
+                        e.target.value,
+                        type,
+                        field.onChange,
+                      )
+                    } />
                 )}
               />
             )}
@@ -225,8 +225,8 @@ const TransformationForm = ({
             control={form.control}
             name="publicId"
             className="flex size-full flex-col"
-            render={({field}) => (
-              <MediaUploader 
+            render={({ field }) => (
+              <MediaUploader
                 onValueChange={field.onChange}
                 setImage={setImage}
                 publicId={field.value}
@@ -236,29 +236,36 @@ const TransformationForm = ({
             )}
           />
 
-          <TransformedImage />
+          <TransformedImage 
+            image={image}
+            type={type}
+            title={form.getValues().title}
+            isTransforming={isTransforming}
+            setIsTransforming={setIsTransforming}
+            transformationConfig={transformationConfig}
+          />
         </div>
-        
+
         <div className="flex flex-col gap-4">
-        <Button
-          type="submit"
-          className="submit-button capitalize"
-          disabled={isTransforming || newTransformation === null}
-          onClick={onTransformHandler}
+          <Button
+            type="submit"
+            className="submit-button capitalize"
+            disabled={isTransforming || newTransformation === null}
+            onClick={onTransformHandler}
           >
             {
               isTransforming ? "Transforming..." : "Apply transformation"
             }
-        </Button>
-        <Button
-          type="submit"
-          className="submit-button capitalize"
-          disabled={isSubmitting}
-        >
+          </Button>
+          <Button
+            type="submit"
+            className="submit-button capitalize"
+            disabled={isSubmitting}
+          >
             {
               isSubmitting ? "Submitting..." : "Save Image"
             }
-        </Button>
+          </Button>
         </div>
       </form>
     </Form>
