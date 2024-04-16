@@ -66,7 +66,7 @@ const TransformationForm = ({
   const [transformationConfig, setTransformationConfig] = useState(config);
 
   const [isPending, startTransition] = useTransition();
-  const router = useRouter()
+  const router = useRouter();
   // 1. Define your form.
   const initialValues =
     data && action === "Update"
@@ -88,56 +88,56 @@ const TransformationForm = ({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsSubmitting(true);
 
-    if(data || image){
-      const transformationURL  = getCldImageUrl({
-        width : image?.width,
-        height : image?.height,
-        src : image?.publicId,
-        ...transformationConfig
-      })
+    if (data || image) {
+      const transformationUrl = getCldImageUrl({
+        width: image?.width,
+        height: image?.height,
+        src: image?.publicId,
+        ...transformationConfig,
+      });
 
       const imageData = {
-        title : values.title,
-        publicId : image?.publicId,
-        transformationType : type,
-        width : image?.width,
-        height : image?.height,
-        config : transformationConfig,
-        secureURL : image?.secureUrl,
-        transformationURL,
-        aspectRatio : values.aspectRatio,
-        prompt : values.prompt,
-        color : values.color
-      }
+        title: values.title,
+        publicId: image?.publicId,
+        transformationType: type,
+        width: image?.width,
+        height: image?.height,
+        config: transformationConfig,
+        secureURL: image?.secureURL,
+        transformationURL: transformationUrl,
+        aspectRatio: values.aspectRatio,
+        prompt: values.prompt,
+        color: values.color,
+      };
 
-      if(action === "Add"){
+      if (action === "Add") {
         try {
           const newImage = await addImage({
-            image : imageData,
+            image: imageData,
             userId,
-            path : "/"
-          })
+            path: "/",
+          });
 
-          if(newImage){
+          if (newImage) {
             form.reset();
-            setImage(data)
-            router.push(`/transformations/${newImage._id}`)
+            setImage(data);
+            router.push(`/transformations/${newImage._id}`);
           }
         } catch (error) {
           console.log(error);
         }
       }
 
-      if(action === "Update"){
+      if (action === "Update") {
         try {
           const updatedImage = await updateImage({
-            image : {...imageData,_id : data._id},
+            image: { ...imageData, _id: data._id },
             userId,
-            path : `/transformtaions/${data._id}`
-          })
+            path: `/transformtaions/${data._id}`,
+          });
 
-          if(updatedImage){
-            router.push(`/transformations/${updatedImage._id}`)
+          if (updatedImage) {
+            router.push(`/transformations/${updatedImage._id}`);
           }
         } catch (error) {
           console.log(error);

@@ -47,13 +47,9 @@ export async function updateImage({ image, userId, path }: UpdateImageParams) {
       throw new Error("Unauthorized or Image not found");
     }
 
-    const updatedImage = await Image.findByIdAndUpdate(
-      imageToUpdate._id,
-      image,
-      {
-        new: true,
-      },
-    );
+    await Image.findByIdAndUpdate(imageToUpdate._id, image, {
+      new: true,
+    });
     //don't return cache
     revalidatePath(path);
 
