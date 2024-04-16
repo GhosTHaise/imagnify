@@ -35,6 +35,8 @@ import { AspectRatioKey, debounce, deepMergeObjects } from "@/lib/utils";
 import { updateCredits } from "@/lib/actions/user.actions";
 import MediaUploader from "./MediaUploader";
 import TransformedImage from "./TransformedImage";
+import { getCldImageUrl } from "next-cloudinary";
+import { addImage } from "@/lib/actions/image.action";
 
 export const formSchema = z.object({
   title: z.string(),
@@ -81,7 +83,44 @@ const TransformationForm = ({
   });
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsSubmitting(true);
+
+    if(data || image){
+      const transformationURL  = getCldImageUrl({
+        width : image?.width,
+        height : image?.height,
+        src : image?.publicId,
+        ...transformationConfig
+      })
+
+      const imageData = {
+        title : values.title,
+        publicId : image?.publicId,
+        transformationType : type,
+        width : image?.width,
+        height : image?.height,
+        config : transformationConfig,
+        secureURL : image?.secureUrl,
+        transformationURL,
+        aspectRatio : values.aspectRatio,
+        prompt : values.prompt,
+        color : values.color
+      }
+
+      if(action === "Add"){
+        try {
+          const newImage = await addImage({
+            image : imageData,
+            userId,
+            path : "/"
+          })
+        } catch (error) {
+          console.log(error);
+          
+        }
+      }
+    }
     console.log(values);
   }
 
