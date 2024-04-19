@@ -5,15 +5,7 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 
 import { Button } from "@/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
+import { Form } from "@/components/ui/form";
 import {
   Select,
   SelectContent,
@@ -30,7 +22,7 @@ import {
   transformationTypes,
 } from "@/constants";
 import { CustomField } from "./CustomField";
-import { useState, useTransition } from "react";
+import { useEffect, useState, useTransition } from "react";
 import { AspectRatioKey, debounce, deepMergeObjects } from "@/lib/utils";
 import { updateCredits } from "@/lib/actions/user.actions";
 import MediaUploader from "./MediaUploader";
@@ -56,7 +48,7 @@ const TransformationForm = ({
   creditBalance,
   config = null,
 }: TransformationFormProps) => {
-  const transformtaionType = transformationTypes[type];
+  const transformationType = transformationTypes[type];
 
   const [image, setImage] = useState(data);
   const [newTransformation, setNewTransformation] =
@@ -162,7 +154,7 @@ const TransformationForm = ({
       height: imageSize.height,
     }));
 
-    setNewTransformation(transformtaionType.config);
+    setNewTransformation(transformationType.config);
 
     return onChangeField(value);
   };
@@ -200,12 +192,16 @@ const TransformationForm = ({
     });
   };
 
+  useEffect(() => {
+    if (image && (type === "restore" || type === "removeBackground")) {
+      setNewTransformation(transformationType.config);
+    }
+  }, [image, transformationType.config, type]);
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-        {
-          creditBalance < Math.abs(creditFee) && <InsufficientCreditsModal />
-        }
+        {creditBalance < Math.abs(creditFee) && <InsufficientCreditsModal />}
         <CustomField
           control={form.control}
           name="title"
