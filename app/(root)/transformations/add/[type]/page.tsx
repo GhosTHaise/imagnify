@@ -14,6 +14,8 @@ const AddTransformationTypePage = async ({
   if (!userId) redirect("/sign-in");
 
   const user = await getUserById(userId);
+  console.log(user);
+
   return (
     <>
       <Header title={transformation.title} subTitle={transformation.subTitle} />
