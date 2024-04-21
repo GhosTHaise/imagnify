@@ -103,7 +103,7 @@ export async function getAllImages({
     await connectToDatabase();
 
     cloudinary.config({
-      cloud_name: process.env.NEXT_OUBLIC_CLOUDINARY_CLOUDNAME,
+      cloud_name: process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME,
       api_key: process.env.CLOUDINARY_API_KEY,
       api_secret: process.env.CLOUDINARY_API_SECRET,
       secure: true,
@@ -130,7 +130,7 @@ export async function getAllImages({
       };
     }
 
-    const skipAmount = Number(page) - 1 * limit;
+    const skipAmount = (Number(page) - 1) * limit;
     const images = await populateUser(Image.find(query))
       .sort({ updatedAt: -1 })
       .skip(skipAmount)
