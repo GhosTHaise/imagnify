@@ -79,9 +79,10 @@ export async function getImageById(imageId: string) {
   try {
     await connectToDatabase();
 
-    const image = populateUser(Image.findById(imageId));
+    const image = await populateUser(Image.findById(imageId));
 
     if (!image) throw new Error("Image not found");
+    console.log(image);
 
     return JSON.parse(JSON.stringify(image));
   } catch (error) {
