@@ -5,7 +5,7 @@ import Link from "next/link";
 import TransformedImage from "@/components/shared/TransformedImage";
 import { Button } from "@/components/ui/button";
 import { getImageSize } from "@/lib/utils";
-import { getImageById } from "@/lib/actions/image.action";
+import { getImageById } from "@/lib/actions/image.actions";
 import { DeleteConfirmation } from "@/components/shared/DeleteConfirmation";
 import Header from "@/components/shared/Header";
 

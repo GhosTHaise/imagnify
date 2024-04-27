@@ -1,6 +1,6 @@
 import { Collection } from "@/components/shared/Collection";
 import { navLinks } from "@/constants";
-import { getAllImages } from "@/lib/actions/image.action";
+import { getAllImages } from "@/lib/actions/image.actions";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
