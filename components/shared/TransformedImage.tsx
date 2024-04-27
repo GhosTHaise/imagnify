@@ -14,15 +14,19 @@ const TransformedImage = ({
   transformationConfig,
   hasDownload = false,
 }: TransformedImageProps) => {
-  
-  const downloadHandler = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const downloadHandler = (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  ) => {
     e.preventDefault();
-    download(getCldImageUrl({
-      width : image?.width,
-      height : image?.height,
-      src : image?.publicId,
-      ...transformationConfig
-    }),title)
+    download(
+      getCldImageUrl({
+        width: image?.width,
+        height: image?.height,
+        src: image?.publicId,
+        ...transformationConfig,
+      }),
+      title,
+    );
   };
 
   return (
