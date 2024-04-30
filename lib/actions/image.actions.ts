@@ -13,14 +13,16 @@ const populateUser = (query: any) =>
   query.populate({
     path: "author",
     model: User,
-    select: "_idd firstName lastName clerkId",
+    select: "_id firstName lastName clerkId",
   });
 
+// ADD IMAGE
 export async function addImage({ image, userId, path }: AddImageParams) {
   try {
     await connectToDatabase();
 
     const author = await User.findById(userId);
+
     if (!author) {
       throw new Error("User not found");
     }
@@ -29,7 +31,7 @@ export async function addImage({ image, userId, path }: AddImageParams) {
       ...image,
       author: author._id,
     });
-    //don't return cache
+
     revalidatePath(path);
 
     return JSON.parse(JSON.stringify(newImage));
@@ -46,22 +48,24 @@ export async function updateImage({ image, userId, path }: UpdateImageParams) {
     const imageToUpdate = await Image.findById(image._id);
 
     if (!imageToUpdate || imageToUpdate.author.toHexString() !== userId) {
-      throw new Error("Unauthorized or Image not found");
+      throw new Error("Unauthorized or image not found");
     }
 
-    await Image.findByIdAndUpdate(imageToUpdate._id, image, {
-      new: true,
-    });
-    //don't return cache
+    const updatedImage = await Image.findByIdAndUpdate(
+      imageToUpdate._id,
+      image,
+      { new: true },
+    );
+
     revalidatePath(path);
 
-    return JSON.parse(JSON.stringify(updateImage));
+    return JSON.parse(JSON.stringify(updatedImage));
   } catch (error) {
     handleError(error);
   }
 }
 
-//DELETE IMAGE
+// DELETE IMAGE
 export async function deleteImage(imageId: string) {
   try {
     await connectToDatabase();
@@ -74,7 +78,7 @@ export async function deleteImage(imageId: string) {
   }
 }
 
-//GET IMAGE
+// GET IMAGE
 export async function getImageById(imageId: string) {
   try {
     await connectToDatabase();
@@ -82,7 +86,6 @@ export async function getImageById(imageId: string) {
     const image = await populateUser(Image.findById(imageId));
 
     if (!image) throw new Error("Image not found");
-    console.log(image);
 
     return JSON.parse(JSON.stringify(image));
   } catch (error) {
@@ -90,7 +93,7 @@ export async function getImageById(imageId: string) {
   }
 }
 
-//GET ALL IMAGES
+// GET IMAGES
 export async function getAllImages({
   limit = 9,
   page = 1,
@@ -123,6 +126,7 @@ export async function getAllImages({
     const resourceIds = resources.map((resource: any) => resource.public_id);
 
     let query = {};
+
     if (searchQuery) {
       query = {
         publicId: {
@@ -145,6 +149,37 @@ export async function getAllImages({
       data: JSON.parse(JSON.stringify(images)),
       totalPage: Math.ceil(totalImages / limit),
       savedImages,
+    };
+  } catch (error) {
+    handleError(error);
+  }
+}
+
+// GET IMAGES BY USER
+export async function getUserImages({
+  limit = 9,
+  page = 1,
+  userId,
+}: {
+  limit?: number;
+  page: number;
+  userId: string;
+}) {
+  try {
+    await connectToDatabase();
+
+    const skipAmount = (Number(page) - 1) * limit;
+
+    const images = await populateUser(Image.find({ author: userId }))
+      .sort({ updatedAt: -1 })
+      .skip(skipAmount)
+      .limit(limit);
+
+    const totalImages = await Image.find({ author: userId }).countDocuments();
+
+    return {
+      data: JSON.parse(JSON.stringify(images)),
+      totalPages: Math.ceil(totalImages / limit),
     };
   } catch (error) {
     handleError(error);
